@@ -1,0 +1,25 @@
+ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.weatherForecast{
+    width: 607px;
+    height: 585px;
+    margin: auto;
+    border-radius: 12px;
+    background-image: url('../Assets/Image.png');
+    background-repeat: no-repeat;
+    background-position: center ;
+    background-size: cover;
+}
+
+.components {
+    height: 134px;
+    width: 300px;
+    background-color: white;
+    margin-left: 150px;
+    line-height: 9px;
+    margin-top: 20px;
+}
