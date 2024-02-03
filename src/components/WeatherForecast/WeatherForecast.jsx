@@ -2,7 +2,7 @@ import React from "react";
 import "./WeatherForecast.css";
 import { weatherData } from "../../data";
 import { tomorrowData } from "../../tomorrow";
-const WeatherForecast = () => {
+const WeatherForecast = ({ time, handleClick, dailyData, locationName }) => {
   // let yesterday_url = `https://api.tomorrow.io/v4/weather/history/recent?location=korutla&units=metric&apikey=s4Vp6Qz4TSelxrpaN4FsVWS1SrycInz6`;
   // let tomorrow_url =
   //   "https://api.tomorrow.io/v4/weather/forecast?location=new%20york&apikey=s4Vp6Qz4TSelxrpaN4FsVWS1SrycInz6";
@@ -12,38 +12,45 @@ const WeatherForecast = () => {
   //   .then((data) => console.log(data));
 
   let data = weatherData;
-  let tomorrow = tomorrowData
+  let tomorrow = tomorrowData;
+  // console.log(dailyData);
+
+  const getDayFromDate = (dateString) => {
+    const daysOfWeek = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    const date = new Date(dateString);
+    const today = new Date();
+
+    if (
+      date.getUTCFullYear() === today.getUTCFullYear() &&
+      date.getUTCMonth() === today.getUTCMonth() &&
+      date.getUTCDate() === today.getUTCDate()
+    ) {
+      return "Today";
+    } else {
+      const dayIndex = date.getUTCDay();
+      return daysOfWeek[dayIndex];
+    }
+  };
 
   return (
-    <div className="weatherForecast">
-      <ul>
-        <li className="components">
-          <h3>Yesterday...</h3>
-          <h4>{data.location.name.split(", ")[0]}</h4>
-          <p>{data.timelines.daily[1].values.temperatureAvg + "ºC"}</p>
-          <p>{data.timelines.hourly[1].values.humidity + "%"}</p>
-          <p>{data.timelines.hourly[1].values.windSpeed + "km/h"}</p>
-        </li>
-        <li className="components">
-          <h3>Yesterday...</h3>
-          <h4>{data.location.name.split(", ")[0]}</h4>
-          <p>{data.timelines.daily[0].values.temperatureAvg + "ºC"}</p>
-          <p>{data.timelines.daily[0].values.humidityAvg + "%"}</p>
-          <p>{data.timelines.hourly[1].values.windSpeedAvg + "km/h"}</p>
-        </li>
-        <li className="components">
-          <h3>tomorrow...</h3>
-          <h4>{tomorrow.location.name.split(", ")[0]}</h4>
-          <p>{tomorrow.timelines.daily[1].values.temperatureAvg + "ºC"}</p>
-          <p>{tomorrow.timelines.daily[1].values.humidityAvg + "%"}</p>
-          <p>{tomorrow.timelines.daily[1].values.windSpeedAvg + "km/h"}</p>
-        </li>
-        {/* <li className="components">{data.location.name.split(", ")[0]}</h4>
-          <p>{data.timelines.daily[1].values.temperatureAvg + "ºC"}</p>
-          <p>{data.timelines.hourly[1].values.humidity + "%"}</p>
-          <p>{data.timelines.hourly[1].values.windSpeed + "km/h"}</li> */}
-      </ul>
-    </div>
+    <li
+      className="components"
+      onClick={() => handleClick(tomorrow.location.name.split(", ")[0], time)}
+    >
+      <h3>{getDayFromDate(time)}</h3>
+      <h4>{locationName}</h4>
+      <p>{dailyData.values.temperatureAvg + "ºC"}</p>
+      <p>{dailyData.values.humidityAvg + "%"}</p>
+      <p>{dailyData.values.windSpeedAvg + "km/h"}</p>
+    </li>
   );
 };
 
