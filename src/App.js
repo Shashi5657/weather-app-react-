@@ -2,33 +2,35 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import WeatherApp from "./components/WeatherApp/WeatherApp";
 import WeatherForecast from "./components/WeatherForecast/WeatherForecast";
-import { tomorrowData } from "./tomorrow";
-import clearIcon from "../src/components/Assets/clear.png";
-import cloudIcon from "../src/components/Assets/cloud.png";
-import humidityIcon from "../src/components/Assets/humidity.png";
-import rainIcon from "../src/components/Assets/rain.png";
-import snowIcon from "../src/components/Assets/snow.png";
-import windIcon from "../src/components/Assets/wind.png";
-import drizzleIcon from "../src/components/Assets/drizzle.png";
+import clearIcon from "./components/Assets/clear.png";
+import cloudIcon from "./components/Assets/cloud.png";
+import drizzleIcon from "./components/Assets/drizzle.png";
+import rainIcon from "./components/Assets/rain.png";
+import snowIcon from "./components/Assets/snow.png";
 
 function App() {
   const [name, setName] = useState("");
+  const [wicon, setWicon] = useState("");
   const [filterData, setFilterData] = useState([]);
-  const [wicon, setWicon] = useState(cloudIcon);
   const [tommorrowData, setTommorrowData] = useState([]);
+  const [clickedName, setClickedName] = useState("");
 
   const handleButtonClick = (name, time) => {
     console.log(name, "app");
     setName(name);
+    setClickedName("");
     const filterData = tommorrowData.timelines.daily.filter(
       (item) => item.time === time
     );
     setFilterData(filterData);
   };
 
-  const handleSearch = (searchName) => {
-    console.log(searchName);
+  const handleSearch = (searchName, name) => {
+    setName(searchName);
+    setClickedName(name);
+    console.log(name, "clickedName");
     fetchData(searchName);
+    // search(searchName);
   };
 
   useEffect(() => {
@@ -40,66 +42,47 @@ function App() {
 
     fetch(tomorrow_url)
       .then((response) => response.json())
-      .then((data) => setTommorrowData(data));
+      .then((data) => {
+        setTommorrowData(data);
+        search(data);
+      });
   };
 
-  if (tommorrowData.length === 0) {
+  const search = (data) => {
+    const { weatherCodeMax } = data.timelines.daily[0].values;
+    console.log(weatherCodeMax, "max");
+    if (weatherCodeMax === "1000" || weatherCodeMax === "10001") {
+      setWicon(clearIcon);
+    } else if (weatherCodeMax === "1001" || weatherCodeMax === "10011") {
+      setWicon(cloudIcon);
+    } else if (weatherCodeMax === "4000" || weatherCodeMax === "40001") {
+      setWicon(drizzleIcon);
+    } else if (weatherCodeMax === "42040" || weatherCodeMax === "42041") {
+      setWicon(drizzleIcon);
+    } else if (["4001", "40011", "4201", "42011"].includes(weatherCodeMax)) {
+      setWicon(rainIcon);
+    } else if (weatherCodeMax === "4201" || weatherCodeMax === "42011") {
+      setWicon(rainIcon);
+    } else if (
+      ["5001", "50011", "5100", "51001", "51011"].includes(weatherCodeMax)
+    ) {
+      setWicon(snowIcon);
+    } else {
+      setWicon(clearIcon);
+    }
+  };
+
+  if (tommorrowData.length === 0 || tommorrowData.type === "Too Many Calls") {
     return <div>Loading........</div>;
   }
-
-  // const search = async (cityName) => {
-  //   const element = document.getElementsByClassName("cityInput");
-  //   if (element[0].value === "" && cityName === "") {
-  //     return 0;
-  //   }
-
-  //   const searchName = element[0].value || cityName;
-  //   // let url = `https://api.openweathermap.org/data/2.5/weather?q=${element[0].value}&units=Metric&appid=${api_key}`;
-  //   let url = `https://api.tomorrow.io/v4/weather/forecast?location=${searchName}&apikey=s4Vp6Qz4TSelxrpaN4FsVWS1SrycInz6`;
-
-  //   let response = await fetch(url);
-  //   let data = await response.json();
-
-  //   // let data = weatherData;
-  //   const humidity = document.getElementsByClassName("humidity-percent");
-  //   const wind = document.getElementsByClassName("wind-rate");
-  //   const temprature = document.getElementsByClassName("weather-temp");
-  //   const location = document.getElementsByClassName("weather-location");
-
-  //   console.log(filterData, "filterData");
-
-  //   humidity[0].innerHTML = filterData[0].values.humidityAvg + "%";
-  //   wind[0].innerHTML = filterData[0].values.windSpeedAvg + "km/h";
-  //   temprature[0].innerHTML = filterData[0].values.temperatureAvg + "ºC";
-  //   location[0].innerHTML = cityName;
-
-  //   const { weatherCode } = filterData[0].values;
-
-  //   if (weatherCode === "1100" || weatherCode === "10001") {
-  //     setWicon(clearIcon);
-  //   } else if (weatherCode === "10010" || weatherCode === "10011") {
-  //     setWicon(cloudIcon);
-  //   } else if (weatherCode === "40000" || weatherCode === "40001") {
-  //     setWicon(drizzleIcon);
-  //   } else if (weatherCode === "42040" || weatherCode === "42041") {
-  //     setWicon(drizzleIcon);
-  //   } else if (weatherCode === "42000" || weatherCode === "42001") {
-  //     setWicon(rainIcon);
-  //   } else if (weatherCode === "40010" || weatherCode === "40011") {
-  //     setWicon(rainIcon);
-  //   } else if (weatherCode === "50000" || weatherCode === "50001") {
-  //     setWicon(snowIcon);
-  //   } else {
-  //     setWicon(clearIcon);
-  //   }
-  // };
 
   return (
     <div className="App">
       <WeatherApp
-        name={name}
-        filterData={filterData}
+        name={tommorrowData.location.name.split(", ")[0]}
+        filterData={clickedName ? tommorrowData.timelines.daily : filterData}
         handleSearch={handleSearch}
+        wicon={wicon}
       />
       <div className="weatherForecast">
         <ul>

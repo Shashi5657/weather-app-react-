@@ -1,7 +1,13 @@
 .App {
-  text-align: center;
-  background-image: url('./components/Assets/bg1.jpg');
+  background-image: url("./components/Assets/bg1.jpg");
   background-attachment: fixed;
   background-size: cover;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
 }
 
+.forecast {
+  flex: 1;
+  padding: 20px;
+}

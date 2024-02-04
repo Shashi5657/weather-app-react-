@@ -41,10 +41,7 @@ const WeatherForecast = ({ time, handleClick, dailyData, locationName }) => {
   };
 
   return (
-    <li
-      className="components"
-      onClick={() => handleClick(tomorrow.location.name.split(", ")[0], time)}
-    >
+    <li className="components" onClick={() => handleClick(locationName, time)}>
       <h3>{getDayFromDate(time)}</h3>
       <h4>{locationName}</h4>
       <p>{dailyData.values.temperatureAvg + "ºC"}</p>
