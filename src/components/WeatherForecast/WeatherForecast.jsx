@@ -13,6 +13,7 @@ const WeatherForecast = ({ time, handleClick, dailyData, locationName }) => {
 
   let data = weatherData;
   let tomorrow = tomorrowData;
+
   // console.log(dailyData);
 
   const getDayFromDate = (dateString) => {
@@ -25,6 +26,7 @@ const WeatherForecast = ({ time, handleClick, dailyData, locationName }) => {
       "Friday",
       "Saturday",
     ];
+
     const date = new Date(dateString);
     const today = new Date();
 
@@ -42,11 +44,15 @@ const WeatherForecast = ({ time, handleClick, dailyData, locationName }) => {
 
   return (
     <li className="components" onClick={() => handleClick(locationName, time)}>
-      <h3>{getDayFromDate(time)}</h3>
-      <h4>{locationName}</h4>
-      <p>{dailyData.values.temperatureAvg + "ºC"}</p>
-      <p>{dailyData.values.humidityAvg + "%"}</p>
-      <p>{dailyData.values.windSpeedAvg + "km/h"}</p>
+      <h3 className="day">{getDayFromDate(time)}</h3>
+      <div className="city-temp">
+        <h4 className="city">{locationName}</h4>
+        <p className="temp">{dailyData.values.temperatureAvg + "ºC"}</p>
+      </div>{" "}
+      <div className="hum-wind">
+        <p className="hum">{dailyData.values.humidityAvg + "%"}</p>
+        <p className="wind">{dailyData.values.windSpeedAvg + "km/h"}</p>
+      </div>
     </li>
   );
 };

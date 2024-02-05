@@ -1,18 +1,7 @@
-ul {
-  list-style: none;
-}
-
 /* .weatherForecast {
 }
 
-.components {
-  height: 145px;
-  width: 300px;
-  background-color: white;
-  margin-left: 150px;
-  line-height: 9px;
-  margin-top: 20px;
-}
+
 
 ul {
   display: grid;
@@ -21,16 +10,58 @@ ul {
   gap: 10px;
 } */
 
+.components {
+  position: relative;
+  list-style: none;
+  background-image: url(../Assets/bg2.webp);
+  background-size: cover;
+  border-radius: 10px;
+  padding: 12px;
+  color: #fff;
+  text-shadow: 5px 4px 5px black;
+
+  text-align: center;
+  overflow: hidden;
+}
+
 ul {
+  list-style: none;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  gap: 15px 10px;
+  gap: 7px 10px;
+  margin: 0;
+  margin-right: 15px;
 }
 
 li {
   background-color: #2ecc71;
   border: 1px solid #27ae60;
-  padding: 10px;
+  padding: 12px;
   box-sizing: border-box;
+}
+
+.day {
+  font-size: 24px;
+  font-weight: bold;
+  position: relative;
+  z-index: 2;
+  margin: 0;
+}
+
+.city-temp {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.hum-wind {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 0;
 }

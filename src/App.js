@@ -3,6 +3,7 @@ import "./App.css";
 import WeatherApp from "./components/WeatherApp/WeatherApp";
 import WeatherForecast from "./components/WeatherForecast/WeatherForecast";
 import clearIcon from "./components/Assets/clear.png";
+
 import cloudIcon from "./components/Assets/cloud.png";
 import drizzleIcon from "./components/Assets/drizzle.png";
 import rainIcon from "./components/Assets/rain.png";
@@ -10,6 +11,7 @@ import snowIcon from "./components/Assets/snow.png";
 
 function App() {
   const [name, setName] = useState("");
+
   const [wicon, setWicon] = useState("");
   const [filterData, setFilterData] = useState([]);
   const [tommorrowData, setTommorrowData] = useState([]);
@@ -61,8 +63,6 @@ function App() {
       setWicon(drizzleIcon);
     } else if (["4001", "40011", "4201", "42011"].includes(weatherCodeMax)) {
       setWicon(rainIcon);
-    } else if (weatherCodeMax === "4201" || weatherCodeMax === "42011") {
-      setWicon(rainIcon);
     } else if (
       ["5001", "50011", "5100", "51001", "51011"].includes(weatherCodeMax)
     ) {
@@ -84,7 +84,7 @@ function App() {
         handleSearch={handleSearch}
         wicon={wicon}
       />
-      <div className="weatherForecast">
+      <div className="forecast">
         <ul>
           {tommorrowData.timelines.daily.map((item) => (
             <WeatherForecast
@@ -101,3 +101,5 @@ function App() {
 }
 
 export default App;
+
+// adding some comments for fun
